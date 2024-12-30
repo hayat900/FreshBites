@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import restaurantList from "./restaurantData.js";
 /*
 <div id="parent">
     <div id="child">
@@ -28,6 +29,24 @@ import ReactDOM from "react-dom/client";
         <h2>Hello from functional component</h2>
         </div>
     )*/
+
+    /* My Food App structure will look like this, 
+            1) Header
+                - Logo
+                - Nav Items(right side)
+                - Cart
+            2) Body
+                - Search bar
+                - Restaurants List
+                    - Restaurant card
+                        - Image
+                        - Name
+                        - Rating
+            3) Footer
+                - Links
+                - Copyrights
+       
+*/
    const Header=()=>(
     <div className="header">
         <div>
@@ -38,13 +57,54 @@ import ReactDOM from "react-dom/client";
                 <li>Home</li>
                 <li>About Us</li>
                 <li>Contact Us</li>
-                <li>Cart</li>
+                <li>
+                <i class="fa-solid fa-cart-shopping"></i>
+                </li>
             </ul>
         </div>
     </div>
    );
+
+  // Restaurant card component: Image, name, cuisine
+  const RestaurantCard = ({ resData }) => {
+    const { cloudinaryImageId, name, locality, avgRating, lastMileTravelString, costForTwo, cuisines } = resData;
+    return (
+        <div className="card">
+            <img src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/" + cloudinaryImageId} alt={name} />
+            <h2>{name}</h2>
+<p className="locality">{locality}</p>
+<p className="cuisines">{cuisines.join(", ")}</p>
+<div className="card-info">
+    <div className="rating">
+        <i className="fa-solid fa-star"></i> {avgRating}
+    </div>
+    <div className="distance">
+        {lastMileTravelString}
+    </div>
+    <div className="cost">
+        {costForTwo}
+    </div>
+</div>
+</div>
+    );
+};
+
+    const Body = () => {
+        return (
+          <div className="restaurant-list">
+            {restaurantList.restaurants.map((restaurant) => {
+              return <RestaurantCard key={restaurant.info.id} resData={restaurant.info} />;
+            })}
+          </div>
+        );
+      };
+
    const Applayout=()=>(
-    <div className="app"><Header/></div>
+    <div className="app">
+        <Header/>
+        <Body/>
+        </div>
+
    )
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<Applayout/>);// it converts that object into html element
