@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Body from "./components/Body.js"
 import Header from "./components/Header.js";
-import About from "./components/About.js";
 import Contact from "./components/Contact.js";
 import Error from "./components/Error.js";
+import { lazy } from "react";
 import RestaurantMenu from "./components/RestaurantMenu.js";
 /*
 <div id="parent">
@@ -58,7 +58,8 @@ import RestaurantMenu from "./components/RestaurantMenu.js";
   // Restaurant card component: Image, name, cuisine
   
 
-
+  const Grocery = lazy(() => import("./components/Grocery"));
+  const About = lazy(() => import("./components/About"));
    const Applayout=()=>(
     <div className="app">
         <Header/>
@@ -77,7 +78,7 @@ import RestaurantMenu from "./components/RestaurantMenu.js";
           },
           {
             path: "/about",
-            element: <About />,
+            element: <Suspense fallback={<h1>I am going to grocery</h1>}><About/></Suspense>,
           },
           {
               path:"/contact",
@@ -86,6 +87,10 @@ import RestaurantMenu from "./components/RestaurantMenu.js";
           {
             path:"/restaurants/:resId",
             element:<RestaurantMenu/>,
+          },
+          {
+            path:"/grocery",
+            element:<Suspense fallback={<h1>I am going to grocery</h1>}><Grocery/></Suspense>,
           }
       ],
       errorElement:<Error/>
