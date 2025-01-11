@@ -1,8 +1,9 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, {withPromotedLabel} from "./RestaurantCard";
 import { useState, useEffect} from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../util/useOnlineStatus";
+
 
 const Body = () => {
   // Local State Variable - Super powerful variable
@@ -10,6 +11,7 @@ const Body = () => {
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
 
   const [searchText, setSearchText] = useState("");
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
 
   // Whenever state variables update, react triggers a reconciliation cycle(re-renders the component)
@@ -47,49 +49,44 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter flex">
-        <div className="search m-4 p-4">
-          <input
-            type="text"
-            data-testid="searchInput"
-            className="border border-solid border-black"
-            value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
-          />
-          <button
-            className="px-4 py-2 bg-green-100 m-4 rounded-lg"
-            onClick={() => {
-              // Filter the restraunt cards and update the UI
-              // searchText
-              console.log(searchText);
+      <div className="filter flex justify-between">
+      <div className="flex items-center bg-white p-2 rounded-lg shadow-lg w-full max-w-xl">
+  <input
+    type="text"
+    className="w-full p-3 border-2 border-gray-300 rounded-lg outline-none focus:border-green-500 transition duration-300 ease-in-out"
+    placeholder="Search for restaurants"
+    value={searchText}
+    onChange={(e) => setSearchText(e.target.value)}
+  />
+  <button
+    className="ml-4 px-6 py-3 bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white rounded-lg font-semibold shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+    onClick={() => {
+      const filtered = listOfRestaurants.filter((res) =>
+        res.info.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredRestaurant(filtered);
+    }}
+  >
+    Search
+  </button>
+</div>
 
-              const filteredRestaurant = listOfRestaurants.filter((res) =>
-                res.info.name.toLowerCase().includes(searchText.toLowerCase())
-              );
-
-              setFilteredRestaurant(filteredRestaurant);
-            }}
-          >
-            Search
-          </button>
-        </div>
         <div className="search m-4 p-4 flex items-center">
-          <button
-            className="px-4 py-2 bg-gray-100 rounded-lg"
-            onClick={() => {
-              const filteredList = listOfRestaurants.filter(
-                (res) => res.info.avgRating > 4
-              );
-              setFilteredRestaurant(filteredList);
-            }}
-          >
-            Top Rated Restaurants
-          </button>
+          {/* Filter Button */}
+        <button
+    className="px-6 py-3 bg-pink-300 text-black font-semibold rounded-lg shadow-lg hover:bg-pink-400 transform hover:scale-105 transition-all duration-200"
+    onClick={() => {
+            const filteredList = listOfRestaurants.filter(
+              (res) => res.info.avgRating > 4.5
+            );
+            setFilteredRestaurant(filteredList);
+          }}
+        >
+          Top Rated
+        </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex flex-wrap justify-start gap-4">
         {filteredRestaurant.map((restaurant) => (
           <Link
             key={restaurant?.info.id}
@@ -97,6 +94,7 @@ const Body = () => {
           >
             {
               <RestaurantCard resData={restaurant?.info} />
+              
             }
           </Link>
         ))}

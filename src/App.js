@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect , useState} from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Body from "./components/Body.js"
@@ -7,6 +7,8 @@ import Contact from "./components/Contact.js";
 import Error from "./components/Error.js";
 import { lazy } from "react";
 import RestaurantMenu from "./components/RestaurantMenu.js";
+import UserContext from "./util/UserContext.js";
+import Login from "./components/Login.js";
 /*
 <div id="parent">
     <div id="child">
@@ -60,13 +62,25 @@ import RestaurantMenu from "./components/RestaurantMenu.js";
 
   const Grocery = lazy(() => import("./components/Grocery"));
   const About = lazy(() => import("./components/About"));
-   const Applayout=()=>(
-    <div className="app">
-        <Header/>
-        <Outlet/>
-        </div>
 
-   );
+  
+
+  const Applayout = () => {
+    const[username, setusername]=useState(null);
+  useEffect(()=>{
+    const data="";
+    setusername(data);
+  },[]);
+    return (
+      <UserContext.Provider value={{ loggedInUser: username, setusername }}>
+        <div className="app">
+          <Header />
+          <Outlet />
+        </div>
+      </UserContext.Provider>
+    );
+  };
+  
 
    const appRouter = createBrowserRouter([
     {
@@ -91,7 +105,11 @@ import RestaurantMenu from "./components/RestaurantMenu.js";
           {
             path:"/grocery",
             element:<Suspense fallback={<h1>I am going to grocery</h1>}><Grocery/></Suspense>,
-          }
+          },
+          {
+            path: "/login",
+            element: <Login/>
+          },
       ],
       errorElement:<Error/>
     },
