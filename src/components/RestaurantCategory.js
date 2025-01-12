@@ -4,7 +4,7 @@ const RestaurantCategory = ({ data,showitem,setshowindex }) => {
     const handleClick=()=>{
         setshowindex();
     }
-    console.log(data.itemCards);
+    //console.log(data.itemCards);
   return (
     <div>
       {/* Header */}
@@ -15,7 +15,7 @@ const RestaurantCategory = ({ data,showitem,setshowindex }) => {
           </span>
           <span>⬇️</span>
         </div>
-        {showitem && <ItemList items={data.itemCards}/>}
+        {showitem && <ItemList items={data.itemCards} display={true}/>}
       </div>
     </div>
   );

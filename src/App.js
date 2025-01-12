@@ -9,6 +9,9 @@ import { lazy } from "react";
 import RestaurantMenu from "./components/RestaurantMenu.js";
 import UserContext from "./util/UserContext.js";
 import Login from "./components/Login.js";
+import { Provider } from "react-redux";
+import appStore from "./util/appStore.js";
+import Cart from "./components/Cart.js";
 /*
 <div id="parent">
     <div id="child">
@@ -72,12 +75,14 @@ import Login from "./components/Login.js";
     setusername(data);
   },[]);
     return (
+      <Provider store={appStore}>
       <UserContext.Provider value={{ loggedInUser: username, setusername }}>
         <div className="app">
           <Header />
           <Outlet />
         </div>
       </UserContext.Provider>
+      </Provider>
     );
   };
   
@@ -109,6 +114,10 @@ import Login from "./components/Login.js";
           {
             path: "/login",
             element: <Login/>
+          },
+          {
+            path: "/cart",
+            element: <Cart/>
           },
       ],
       errorElement:<Error/>

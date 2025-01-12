@@ -1,9 +1,50 @@
+import { useDispatch } from "react-redux";
+import { addItem, removeItem } from "../util/cartSlice";
+import { useState, useEffect } from "react";
+
 const ItemList = (props) => {
-  const { items } = props;
+  const { items, display } = props;
+  const [showSuccess, setShowSuccess] = useState(false); // To control the success message visibility
+
+  const dispatch = useDispatch();
+
+  const handleAddItem = (item) => {
+    // Dispatch an action to add item
+    dispatch(addItem(item));
+    setShowSuccess(true);
+  };
+  const handleRemoveItem = (item) => {
+    console.log(item);
+    // Dispatch an action to add item
+    dispatch(removeItem(item));
+    setShowSuccess(true);
+  };
+
+  useEffect(() => {
+    if (showSuccess) {
+      // Hide the success message after 3 seconds
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000); // 3000 ms = 3 seconds
+
+      return () => clearTimeout(timer); // Cleanup the timer when the component unmounts
+    }
+  }, [showSuccess]);
 
   return (
     <div>
-      {items.map((item) => (
+      {/* Conditionally display the success message banner */}
+      {showSuccess && display && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md transition-opacity duration-300">
+          Item Added Successfully!
+        </div>
+      )}
+      {showSuccess && !display && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md transition-opacity duration-300">
+          Item Deleted Successfully!
+        </div>
+      )}
+      {items.map((item, index) => (
         <div
           data-testid="foodItems"
           key={item.card.info.id}
@@ -25,22 +66,36 @@ const ItemList = (props) => {
               {item.card.info.description}
             </p>
           </div>
-          <div className="w-3/4 p-4">
+
+          {/* Create a container for image and button to prevent overlap */}
+          <div className="w-72 p-4 flex flex-col items-center">
             <img
               src={
                 "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/" +
                 item.card.info.imageId
               }
               alt={item.card.info.name}
-              className="w-full object-cover rounded-lg"
+              className="w-full h-48 object-cover rounded-lg"
             />
+          
+            {/* Button placed outside the image, at the bottom of the container */}
+            {display && (
+              <button
+                onClick={() => handleAddItem(item)}
+                className="mt-4 p-2 w-full rounded-lg bg-black text-white hover:bg-gray-700 transition-colors duration-300 ease-in-out"
+              >
+                Add +
+              </button>
+            )}
+            {!display && (
+              <button
+                onClick={() => handleRemoveItem(index)}
+                className="mt-4 p-2 w-full rounded-lg bg-black text-white hover:bg-gray-700 transition-colors duration-300 ease-in-out"
+              >
+                Remove +
+              </button>
+            )}
           </div>
-          {/* Add button moved to bottom-right */}
-          <button
-            className="absolute bottom-4 right-4 p-2 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors duration-300 ease-in-out"
-          >
-            Add +
-          </button>
         </div>
       ))}
     </div>
