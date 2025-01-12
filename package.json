@@ -2,10 +2,13 @@
   "name": "react-basic",
   "version": "1.0.0",
   "description": "This deals with basics of react",
+  "homepage": "http://hayat900.github.io/FreshBites/",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
-    "test": "jest"
+    "test": "jest",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "author": "dishadsouza",
   "license": "ISC",
