@@ -2,7 +2,7 @@
   "name": "react-basic",
   "version": "1.0.0",
   "description": "This deals with basics of react",
-  "homepage": "http://hayat900.github.io/FreshBites/",
+  "homepage": "https://hayat900.github.io/FreshBites/",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
