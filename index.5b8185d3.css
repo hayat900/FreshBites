@@ -220,6 +220,16 @@ textarea {
   resize: vertical;
 }
 
+input::-moz-placeholder {
+  opacity: 1;
+  color: #9ca3af;
+}
+
+textarea::-moz-placeholder {
+  opacity: 1;
+  color: #9ca3af;
+}
+
 input::placeholder, textarea::placeholder {
   opacity: 1;
   color: #9ca3af;
@@ -659,6 +669,7 @@ img, video {
 }
 
 .object-cover {
+  -o-object-fit: cover;
   object-fit: cover;
 }
 
@@ -947,4 +958,4 @@ img, video {
 .focus\:ring-opacity-50:focus {
   --tw-ring-opacity: .5;
 }
-/*# sourceMappingURL=index.9e4c6fd2.css.map */
+/*# sourceMappingURL=index.5b8185d3.css.map */
